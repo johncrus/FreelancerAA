@@ -28,7 +28,26 @@
                     <tr class="jobRow">
 
                         <td class="">
-                            <a asp-controller="JobList" asp-action="Detail" asp-route-id="@job.JobId"> @job.Title </a>
+                            @if (job.Status == "1")
+                            {
+                                <a asp-controller="JobList" asp-action="Detail" asp-route-id="@job.JobId"> @job.Title </a>
+                            }
+                            @if (job.Status == "2")
+                            {
+
+                                <a asp-controller="JobList" asp-action="JobInProgress" asp-route-id="@job.JobId"> @job.Title </a>
+                            }
+                            @if (job.Status == "3")
+                            {
+
+                                 @job.Title 
+                            }
+                            @if (job.Status == "4")
+                            {
+
+                                 @job.Title 
+                            }
+
                         </td>
                         @switch (job.Status)
                         {
@@ -42,7 +61,7 @@
                                 <td class=""><span class="label label-danger">Unsuccessful</span></td>
                                 break;
                             case "4":
-                                <td class=""><span class="label label-success">Succes</span></td>
+                                <td class=""><span class="label label-success">Complete</span></td>
                                 break;
                             default:
                                 {

@@ -12,6 +12,9 @@ namespace FreelancerData
         void Add(JobAppliance newJobAppliance);
         void Remove(int id);
         void SetMyPrice(int id, int value);
+        void SetInProgress(int id);
+        void SetComplete(int id);
+        void SetReported(int id);
         JobAppliance GetById(int id);
         DateTime GetDateCreated(int id);
         string GetStatus(int id);

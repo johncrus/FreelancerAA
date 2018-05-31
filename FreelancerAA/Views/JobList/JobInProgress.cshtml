@@ -6,18 +6,20 @@
         <p id="itemDescription">Description: @Model.Description</p>
         <p id="itemPrice">Deal Price: @Model.Price$</p>
         <p id="itemDateCreated">Created on: @Model.DateCreated</p>
-        <p id="itemEmployer">Employer: @Model.Employer</p>
-
+        <p id="itemEmployer">Employer:  <a asp-controller="Profile" asp-action="Detail" asp-route-id="@Model.Employer.Id"> @Model.Employer.FirstName @Model.Employer.LastName </a>  </p>
         @if (Model.CurrentUser == Model.Employer)
         {
 
-            <td class=""><a class="btn btn btn-warning" role="button" asp-controller="JobList" asp-action="Report" asp-route-id="@Model.JobId" onclick="return confirm(' Are you sure you want to report this person?')">Report</a></td>
+            <a class="btn btn btn-warning" role="button" asp-controller="JobList" asp-action="Report" asp-route-id="@Model.JobId" onclick="return confirm(' Are you sure you want to report this person?')">Report</a>
         }
-        @if (Model.CurrentUser == Model.CurrentUser)
+        @if (Model.CurrentUser == Model.User)
         {
 
-            <td class=""><a class="btn btn btn-success" role="button" asp-controller="JobList" asp-action="Complete" asp-route-id="@Model.JobId" onclick="return confirm('ATENTION! This process is ireversible. Are you sure?')">Complete</a></td>
+            <a class="btn btn btn-success" role="button" asp-controller="JobList" asp-action="Complete" asp-route-id="@Model.JobId" onclick="return confirm('ATENTION! This process is ireversible. Are you sure?')">Complete</a>
+            <a class="btn btn btn-warning" role="button" asp-controller="JobList" asp-action="Report" asp-route-id="@Model.JobId" onclick="return confirm(' Are you sure you want to report this person?')">Report</a>
+
         }
+
 
 
     </div>

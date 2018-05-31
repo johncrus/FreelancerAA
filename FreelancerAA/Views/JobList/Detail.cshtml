@@ -212,24 +212,7 @@
                             <td class="">@applicant.DateCreated</td>
                             <td class="">@applicant.MyPrice$</td>
                             <td class="">
-
-
-                          
-                            <form method="post">
-                                <div asp-validation-summary="All" class="text-danger"></div>
-                                <div class="input-group col-md-2">
-                                    <input asp-for="JobId" type="hidden" value="@Model.JobId">
-                                    <input asp-for="EmployerId" type="hidden" value="@applicant.Id">
-                                    <input asp-for="UserPrice" type="hidden" value="@applicant.MyPrice">
-
-                                    <span class="input-group-btn">
-                                        <button class="btn btn btn-info" type="submit">
-                                            Hire
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                            
+                                <a class="btn btn btn-success" role="button" asp-controller="JobList" asp-action="ChangeJobStatus" asp-route-id="@applicant.Id"> Hire </a>  
                             </td>
 
                         </tr>

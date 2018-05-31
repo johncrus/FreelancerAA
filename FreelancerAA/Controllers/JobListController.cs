@@ -6,6 +6,7 @@ using FreelancerData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using System;
 using System.Collections.Generic;
@@ -80,14 +81,54 @@ namespace FreelancerAA.Controllers
             _jobs.Boost(id);
             return RedirectToAction("MyJobs", "JobList");
         }
-
-
-        public async Task<IActionResult> JobInProgress(int id)
+        public async Task<IActionResult> Complete(int id)
         {
             var job = _jobs.GetById(id);
+            _jobapps.SetComplete(id);
             var user = await _userManager.GetUserAsync(User);
-           
+            var ouruser = _users.GetById(job.Employer.Id);
+            await _users.AddStarValueToJobExperience(job.Employer.Id, 1);
+            await _users.AddStarValueToHiringExperience(job.ApplicationUser.Id, 1);
+            await _users.AddFundsAsync(ouruser.Id, job.Price/100*95);
+            await _users.AddFundsAsync("4d9563af-0ca4-4045-a687-4ff0db4560aa", job.Price/100*5);
+            return RedirectToAction("MyJobs");
+        }
+
+        public async Task<IActionResult> Report(int id)
+        {
+            var job = _jobs.GetById(id);
+            _jobapps.SetReported(id);
+            var user = await _userManager.GetUserAsync(User);
+            var ouruser = _users.GetById(job.Employer.Id);
+            await _users.AddStarValueToJobExperience(job.Employer.Id, -1);
+            await _users.AddStarValueToHiringExperience(job.ApplicationUser.Id, -1);
+            await _users.AddFundsAsync(job.ApplicationUser.Id, job.Price);
+            return RedirectToAction("MyJobs");
+        }
+        public async Task<IActionResult> ChangeJobStatus(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
             
+            var jobapp = _jobapps.GetById(id);
+            if (user.Currency < jobapp.MyPrice)
+                return RedirectToAction("AddFunds","Manage");
+            var job = _jobs.GetById(jobapp.JobId);
+            
+            var jobappuser = jobapp.AppliedBy;
+            _jobs.SetEmployer(jobapp.JobId, jobapp.AppliedBy);
+            _jobs.SetPrice(jobapp.JobId, jobapp.MyPrice);
+            _jobapps.SetInProgress(id);
+            
+            var ouruser = _users.GetById(user.Id);
+            await _users.WithdrawFundsAsync(user.Id, jobapp.MyPrice);
+            return RedirectToAction("JobInProgress", new { id = jobapp.JobId });
+        }
+        public async Task<IActionResult> JobInProgress(int id)
+        {
+
+            var job = _jobs.GetById(id);
+            var user = await _userManager.GetUserAsync(User);
+
             var model = new JobDetailModel
             {
                 JobId = id,
@@ -117,17 +158,7 @@ namespace FreelancerAA.Controllers
             return RedirectToAction("ApplyForJob", "JobList", new { jobid= id, userprice });
         }
 
-        [HttpPost]
-        public IActionResult Detail(int id, string hiredEmploeeId, int price)
-        {
-
-            _jobs.SetEmployer(id, _users.GetById(hiredEmploeeId));
-
-            _jobs.SetPrice(id, price);
-           
-
-            return RedirectToAction("JobInProgress", "JobList", new { jobid = id });
-        }
+        
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {

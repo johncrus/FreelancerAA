@@ -27,51 +27,75 @@
                     {
                     <tr class="jobRow">
 
-                            <td class="">
+                        <td class="">
+                            @if (jobapplied.Status == "1")
+                            {
                                 <a asp-controller="JobList" asp-action="Detail" asp-route-id="@jobapplied.JobId"> @jobapplied.JobTitle </a>
-                            </td>
+                            }
+                            @if (jobapplied.Status == "2")
+                            {
+                                @jobapplied.JobTitle
+                            }
+                            @if (jobapplied.Status == "3")
+                            {
+                                <a asp-controller="JobList" asp-action="JobInProgress" asp-route-id="@jobapplied.JobId"> @jobapplied.JobTitle </a>
+                            }
+                            @if (jobapplied.Status == "4")
+                            {
+                                @jobapplied.JobTitle
+                            }
 
-                            <td class="">
-                                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@jobapplied.JobOffererId"> @jobapplied.JobOfferer</a>
-                            </td>
+                        </td>
 
-                        
-                                        @switch (jobapplied.Status)
-                                        {
-                                            case "1":
-                                                <td class=""><span class="label label-primary">Pending</span></td>
-                                                break;
-                                            case "2":
-                                                <td class=""><span class="label label-danger">Rejected</span></td>
-                                                break;
-                                            case "3":
-                                                <td class=""><span class="label label-success">Accepted</span></td>
-                                                break;
-                                            default:
-                                                {
-                                                    <td class=""><span class="label label-default">Unknown</span></td>
-                                                    break;
-                                                }
-                                       }
-                            
+                        <td class="">
+                            <a asp-controller="Profile" asp-action="Detail" asp-route-id="@jobapplied.JobOffererId"> @jobapplied.JobOfferer</a>
+                        </td>
 
-                            <td class="">
-                                @for (int i = 0; i < 10; i++)
+
+                        @switch (jobapplied.Status)
+                        {
+                            case "1":
+                                <td class=""><span class="label label-primary">Pending</span></td>
+                                break;
+                            case "2":
+                                <td class=""><span class="label label-danger">Rejected</span></td>
+                                break;
+                            case "3":
+                                <td class=""><span class="label label-info">Accepted</span></td>
+                                break;
+                            case "4":
+                                <td class=""><span class="label label-success">Complete</span></td>
+                                break;
+                            default:
                                 {
-                                    if (i <= jobapplied.JobOffererHiringExperience)
-                                    {
-                                        <span class="fa fa-star checked"></span>
-                                    }
-                                    else
-                                    {
-                                        <span class="fa fa-star"></span>
-                                    }
-
+                                    <td class=""><span class="label label-default">Unknown</span></td>
+                                    break;
                                 }
-                            </td>
-                            <td class="">@jobapplied.DateApplied</td>
+                        }
+
+
+                        <td class="">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                if (i <= jobapplied.JobOffererHiringExperience)
+                                {
+                                    <span class="fa fa-star checked"></span>
+                                }
+                                else
+                                {
+                                    <span class="fa fa-star"></span>
+                                }
+
+                            }
+                        </td>
+                        <td class="">@jobapplied.DateApplied</td>
+                        @if (jobapplied.Status == "1")
+                        {
+
                             <td class=""><a class="btn btn-lg btn-warning" role="button" asp-controller="JobList" asp-action="QuitAppliedJob" asp-route-id="@jobapplied.AppId">Quit</a></td>
-                     </tr>
+
+                        }
+                    </tr>
 
                     }
                 </tbody>

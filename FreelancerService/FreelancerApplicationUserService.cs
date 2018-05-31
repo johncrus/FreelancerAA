@@ -28,7 +28,7 @@ namespace FreelancerService
 
         public IEnumerable<ApplicationUser> GetTopUsers()
         {
-            return GetAll().OrderByDescending(u => u.HiringExperience+u.Jobexperience).Take(5);
+            return GetAll().Where(u => u.UserName != "administrator").OrderByDescending(u => u.HiringExperience+u.Jobexperience).Take(5);
         }
 
        
@@ -89,6 +89,18 @@ namespace FreelancerService
             return IdentityResult.Success;
         }
 
-        
+        public async Task<IdentityResult> AddStarValueToHiringExperience(string id, int value)
+        {
+            GetById(id).HiringExperience += value;
+            int x = await _context.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
+
+        public async Task<IdentityResult> AddStarValueToJobExperience(string id, int value)
+        {
+            GetById(id).Jobexperience += value;
+            int x = await _context.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
     }
 }

@@ -8,6 +8,8 @@ namespace FreelancerData
     {
         public FreelancerContext(DbContextOptions<FreelancerContext> options) : base(options) { }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Line> Lines { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<JobAppliance> JobAppliances { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)

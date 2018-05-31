@@ -27,7 +27,7 @@ namespace FreelancerService
         public JobAppliance GetById(int id)
         {
             
-                return _context.JobAppliances
+                return _context.JobAppliances.Include(u=>u.AppliedBy)
                    .FirstOrDefault(j => j.Id == id);
             
         }
@@ -76,6 +76,31 @@ namespace FreelancerService
         public void SetMyPrice(int id,int value)
         {
             GetById(id).MyPrice = value;
+            _context.SaveChanges();
+        }
+        public void SetInProgress(int id)
+        {
+            _context.Jobs.FirstOrDefault(j => j.Id == GetById(id).JobId).Status = "2";
+            GetById(id).Status = "3";
+            foreach(var app in   GetThisJobAppliances(GetById(id).JobId).Where(j => j.Id != id))
+            {
+                app.Status = "2";
+            }
+            _context.SaveChanges();
+            
+        }
+
+        public void SetComplete(int id)
+        {
+            _context.Jobs.FirstOrDefault(j => j.Id == id).Status = "4";
+            _context.JobAppliances.FirstOrDefault(u => u.AppliedBy == _context.Jobs.FirstOrDefault(j => j.Id == id).Employer && u.JobId == id).Status = "4";
+            _context.SaveChanges();
+        }
+
+        public void SetReported(int id)
+        {
+            _context.Jobs.FirstOrDefault(j => j.Id == id).Status = "3";
+            _context.JobAppliances.FirstOrDefault(u => u.AppliedBy == _context.Jobs.FirstOrDefault(j => j.Id == id).Employer && u.JobId == id).Status = "2";
             _context.SaveChanges();
         }
     }

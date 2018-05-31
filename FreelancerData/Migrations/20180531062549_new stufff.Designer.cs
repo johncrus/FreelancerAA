@@ -11,9 +11,10 @@ using System;
 namespace FreelancerData.Migrations
 {
     [DbContext(typeof(FreelancerContext))]
-    partial class FreelancerContextModelSnapshot : ModelSnapshot
+    [Migration("20180531062549_new stufff")]
+    partial class newstufff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

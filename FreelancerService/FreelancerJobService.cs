@@ -1,4 +1,5 @@
 ﻿using FreelancerData;
+using FreelancerData.Migrations;
 using FreelancerData.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -48,7 +49,7 @@ namespace FreelancerService
         public IEnumerable<Job> GetAll()
         {
             return _context.Jobs
-                .Include(j => j.ApplicationUser);
+                .Include(j => j.ApplicationUser).Include(u=>u.Employer);
         }
 
         public Job GetById(int id)
