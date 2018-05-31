@@ -1,0 +1,172 @@
+﻿@model FreelancerAA.Models.HomeViewModels.HomeIndexViewModel
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://use.fontawesome.com/1e803d693b.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+<head>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/top.css" />
+    </environment>
+</head>
+<div class="container">
+    <div class="row">
+        <h2 align="center">Search for a Job</h2>
+        <div id="custom-search-input">
+            <form method="post">
+                <div class="input-group col-md-12">
+                    <input asp-for="SearchedString" type="text" class="  search-query form-control" placeholder="Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="submit">
+                            <span class=" glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@if (Model.BCount >= 3)
+{
+    var count = 0;
+
+    <div class="container">
+        <div class="promos">
+
+            @foreach (var job in Model.BoostedJobs.Take(3))
+            {
+
+                if (count == 1)
+                {
+                    <div class="promo scale">
+                        <div class="deal">
+                            <span>@job.JobTitle</span>
+                            <span>@job.JobOfferer</span>
+                        </div>
+                        <span class="price">$@job.Price</span>
+                        <ul class="features">
+                            <li>@job.RequiredSkills</li>
+
+                        </ul>
+                        <a class="button123" role="button" asp-controller="JobList" asp-action="Detail" asp-route-id="@job.JobId">Apply for Job</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="promo">
+                        <div class="deal">
+                            <span>@job.JobTitle</span>
+                            <span>@job.JobOfferer</span>
+                        </div>
+                        <span class="price">$@job.Price</span>
+                        <ul class="features">
+                            <li>@job.RequiredSkills</li>
+
+                        </ul>
+                        <a class="button123" role="button" asp-controller="JobList" asp-action="Detail" asp-route-id="@job.JobId">Apply for Job</a>
+                    </div>
+                }
+
+                count++;
+            }
+        </div>
+    </div>
+}
+
+
+@if (Model.TopUsers.Any())
+{
+
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default user_panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Users with the highest experience</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-container">
+                        <table class="table-users table" border="0">
+                            <thead>
+                                <tr>
+                                    <th ></th>
+                                    <th >Full Name</th>
+                                    <th >Skills</th>
+                                    <th >Hiring Experience</th>
+                                    <th >Job Experience</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var user in Model.TopUsers)
+                                {
+                                    <tr>
+                                        <td width="10">
+                                            <img class="pull-left img-circle nav-user-photo" width="50" src="@user.UserPhoto" />
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Profile" asp-action="Detail" asp-route-id="@user.Id"> @user.FirstName @user.LastName</a>
+                                           
+                                        </td>
+                                        <td>
+                                            @user.Skills
+                                        </td>
+                                        <td >
+                                           <small class="text-muted">
+                                                @for (int i = 0; i < 10; i++)
+                                                {
+                                                    if (i <= user.HiringExperience)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="fa fa-star"></span>
+                                                    }
+
+                                                }
+
+                                            </small>
+                                        </td>
+                                        <td >
+                                            <small class="text-muted">
+                                                @for (int i = 0; i < 10; i++)
+                                                {
+                                                    if (i <= user.Jobexperience)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="fa fa-star"></span>
+                                                    }
+
+                                                }
+                                            </small>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h3>User list is empty</h3>
+
+}
+
+

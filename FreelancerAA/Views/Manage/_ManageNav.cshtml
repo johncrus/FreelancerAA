@@ -1,0 +1,10 @@
+﻿@using FreelancerAA.Views.Manage
+
+
+<ul class="nav nav-pills nav-stacked">
+    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">Profile</a></li>
+    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">Password</a></li>
+    <li class="@ManageNavPages.AddFundsNavClass(ViewContext)"><a asp-action="AddFunds">Add funds</a></li>
+    <li class="@ManageNavPages.WithdrawFundsNavClass(ViewContext)"><a asp-action="WithdrawFunds">Withdraw funds</a></li>
+</ul>
+

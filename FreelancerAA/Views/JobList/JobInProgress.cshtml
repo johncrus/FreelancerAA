@@ -1,0 +1,24 @@
+﻿@model Freelancer.Models.JobList.JobDetailModel
+<div class="jumbotron">
+    <div class="row">
+        <p id="itemCreatedBy"> @Model.User.FirstName @Model.User.LastName </p>
+        <p id="itemSkills">Required skills: @Model.RequiredSkills</p>
+        <p id="itemDescription">Description: @Model.Description</p>
+        <p id="itemPrice">Deal Price: @Model.Price$</p>
+        <p id="itemDateCreated">Created on: @Model.DateCreated</p>
+        <p id="itemEmployer">Employer: @Model.Employer</p>
+
+        @if (Model.CurrentUser == Model.Employer)
+        {
+
+            <td class=""><a class="btn btn btn-warning" role="button" asp-controller="JobList" asp-action="Report" asp-route-id="@Model.JobId" onclick="return confirm(' Are you sure you want to report this person?')">Report</a></td>
+        }
+        @if (Model.CurrentUser == Model.CurrentUser)
+        {
+
+            <td class=""><a class="btn btn btn-success" role="button" asp-controller="JobList" asp-action="Complete" asp-route-id="@Model.JobId" onclick="return confirm('ATENTION! This process is ireversible. Are you sure?')">Complete</a></td>
+        }
+
+
+    </div>
+</div>

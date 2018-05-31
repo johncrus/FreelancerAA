@@ -1,0 +1,88 @@
+﻿@model FreelancerAA.Models.JobList.JobAppliancesListingViewModel
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+
+<div id="jobs">
+    @if (Model.JobsAppliedTo.Any())
+    {
+        <h3>List of Jobs Applied to</h3>
+        <div id="jobsTable">
+            <table class="table table-condensed" id="listOfJobsIndexTable">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Job Offerer</th>
+                        <th>Status</th>
+                        <th>Job Offerer Hiring Experience</th>
+                        <th>Date Applied</th>
+                        <th>Quit Job</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var jobapplied in Model.JobsAppliedTo)
+                    {
+                    <tr class="jobRow">
+
+                            <td class="">
+                                <a asp-controller="JobList" asp-action="Detail" asp-route-id="@jobapplied.JobId"> @jobapplied.JobTitle </a>
+                            </td>
+
+                            <td class="">
+                                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@jobapplied.JobOffererId"> @jobapplied.JobOfferer</a>
+                            </td>
+
+                        
+                                        @switch (jobapplied.Status)
+                                        {
+                                            case "1":
+                                                <td class=""><span class="label label-primary">Pending</span></td>
+                                                break;
+                                            case "2":
+                                                <td class=""><span class="label label-danger">Rejected</span></td>
+                                                break;
+                                            case "3":
+                                                <td class=""><span class="label label-success">Accepted</span></td>
+                                                break;
+                                            default:
+                                                {
+                                                    <td class=""><span class="label label-default">Unknown</span></td>
+                                                    break;
+                                                }
+                                       }
+                            
+
+                            <td class="">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    if (i <= jobapplied.JobOffererHiringExperience)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa fa-star"></span>
+                                    }
+
+                                }
+                            </td>
+                            <td class="">@jobapplied.DateApplied</td>
+                            <td class=""><a class="btn btn-lg btn-warning" role="button" asp-controller="JobList" asp-action="QuitAppliedJob" asp-route-id="@jobapplied.AppId">Quit</a></td>
+                     </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    else
+    {
+        <h3>There are no any job appliances at the moment</h3>
+
+    }
+
+</div>

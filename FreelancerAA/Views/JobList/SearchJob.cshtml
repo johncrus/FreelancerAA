@@ -1,0 +1,65 @@
+﻿@model Freelancer.Models.JobList.JobIndexModel
+
+
+<div class="container">
+    <div class="row">
+        <h2 align="center">Search for a Job</h2>
+        <div id="custom-search-input">
+            <form method="post">
+                <div class="input-group col-md-12">
+                    <input asp-for="SearchedString" type="text" class="  search-query form-control" placeholder="Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="submit">
+                            <span class=" glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="jobs">
+    @if (Model.Jobs.Any())
+    {
+        <h3>List of Jobs for "@Model.SearchedString"</h3>
+        <div id="jobsTable">
+            <table class="table table-condensed" id="listOfJobsIndexTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Date Created</th>
+                        <th>Date Expire</th>
+                        <th>Created by</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var job in Model.Jobs)
+                    {
+                        <tr class="jobRow">
+
+                            <td class="">
+                                <a asp-controller="JobList" asp-action="Detail" asp-route-id="@job.Id"> @job.Title </a>
+                            </td>
+
+                            <td class="">@job.Description</td>
+                            <td class="">@job.Price$</td>
+                            <td class="">@job.DateCreated</td>
+                            <td class="">@job.DateExpire</td>
+                            <td class="">@job.User.FirstName  @job.User.LastName</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    else
+    {
+        <h3>There are no any jobs for "@Model.SearchedString" at the moment</h3>
+
+    }
+
+</div>

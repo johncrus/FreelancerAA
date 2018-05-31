@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using FreelancerData.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <li>
+        <a asp-area="" asp-controller="JobList" asp-action="CreateJob">Create a Job</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="JobList" asp-action="MyJobs">My Created Jobs</a>
+    </li>
+    <li>
+        <a asp-area="" asp-controller="JobList" asp-action="AppliedJobs">My Appliances</a>
+    </li>
+
+}
+

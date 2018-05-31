@@ -1,0 +1,119 @@
+﻿@model FreelancerAA.Models.ProfileViewModels.ProfileViewModel
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+<div class="container">
+    <div class="row">
+
+
+
+        <div class="col-md-7 ">
+            <div class="panel panel-default">
+                <div class="panel-heading">  <h4>User Profile</h4></div>
+                <div class="panel-body">
+
+                    <div class="box box-info">
+
+                        <div class="box-body">
+                            <div class="col-sm-6">
+                                <div align="center">
+                                    <img alt="User Pic" src="@Model.UserPhoto" id="profile-image1" class="img-circle img-responsive">
+                                    <form asp-controller="Profile" asp-action="Index" method="post">
+                                        <select asp-for="UserPhoto" asp-items="Model.Names"></select>
+                                        <br /><button type="submit">Change avatar</button>
+                                    </form>
+                                </div>
+
+                                <br>
+
+                                <!-- /input-group -->
+                            </div>
+                            <div class="col-sm-6">
+                                <h4 style="color:#00b1b1;">@Model.FirstName  @Model.LastName </h4></span>
+                                <span><p>Skills: @Model.Skills</p></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr style="margin:5px 0 5px 0;">
+
+
+                            <div class="col-sm-5 col-xs-6 tital ">First Name:</div><div class="col-sm-7 col-xs-6 ">@Model.FirstName</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+                            <div class="col-sm-5 col-xs-6 tital ">Last Name:</div><div class="col-sm-7"> @Model.LastName</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+                            <div class="col-sm-5 col-xs-6 tital ">Date Of Joining:</div><div class="col-sm-7">@Model.DateOfJoining</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+                            <div class="col-sm-5 col-xs-6 tital ">Date Of Birth:</div><div class="col-sm-7">@Model.DateOfBirth.ToString()</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+                            <div class="col-sm-5 col-xs-6 tital ">Address:</div><div class="col-sm-7">@Model.Address</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+                            <div class="col-sm-5 col-xs-6 tital ">HiringExperience:</div><div class="col-sm-7">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    if (i <= Model.HiringExperience)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa fa-star"></span>
+                                    }
+
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+                            <div class="col-sm-5 col-xs-6 tital ">Job Experience:</div><div class="col-sm-7">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    if (i <= Model.JobExperience)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa fa-star"></span>
+                                    }
+
+                                }
+                            </div>
+
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('#profile-image1').on('click', function () {
+                    $('#profile-image-upload').click();
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+

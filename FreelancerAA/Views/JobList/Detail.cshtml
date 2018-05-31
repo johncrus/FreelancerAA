@@ -1,0 +1,255 @@
+﻿@model Freelancer.Models.JobList.JobDetailModel
+@inject SignInManager<FreelancerData.Models.ApplicationUser> SignInManager
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+<div class="container">
+    <div class="page-header clearfix detailHeading">
+        <h2 class="text-muted">@Model.Title</h2>
+    </div>
+
+</div>
+
+<div class="jumbotron">
+    <div class="row">
+        <p id="itemCreatedBy"> @Model.User.FirstName @Model.User.LastName </p>
+        <p id="itemDescription">Description: @Model.Description</p>
+        <p id="itemPrice">Price: @Model.Price$</p>
+        <p id="itemDateCreated">Created on: @Model.DateCreated</p>
+        <p id="itemDateExpire">Expire on: @Model.DateExpire</p>
+
+
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+
+            @if (Model.User != Model.CurrentUser)
+
+            {
+                @if (Model.IsEmailConfirmed)
+                {
+                    @if (!Model.AlreadyApplied)
+                    {
+                        <form method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="input-group col-md-2">
+                                <input asp-for="JobId" type="hidden" value="@Model.JobId">
+                                <input asp-for="UserPrice" type="text" class="  search-query form-control" placeholder="Apply" />
+
+                                <span class="input-group-btn">
+                                    <button class="btn btn btn-info" type="submit">
+                                        Apply for Job
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="input-group col-md-2">
+                                <input asp-for="JobId" type="hidden" value="@Model.JobId">
+                                <input asp-for="UserPrice" type="text" class="  search-query form-control" placeholder="Apply" />
+                                <span asp-validation-for="UserPrice" class="text-danger"></span>
+
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="submit">
+                                        Update price
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    }
+                }
+                else
+                {
+
+                    <p id="itemEmailNotConfirmed" style="color:red;">You can apply to a job after you confirm your email</p>
+                    <p><a class="btn btn btn-info" role="button" asp-controller="Manage" asp-action="Index">Apply for Job</a></p>
+                }
+
+
+
+            }
+
+        }
+        else
+        {
+            <p><a class="btn btn btn-info" role="button" asp-controller="Account" asp-action="Login">Apply for Job</a></p>
+
+        }
+
+
+
+
+    </div>
+</div>
+
+<div id="jobs">
+    @if (Model.ListOfAppliances.Any())
+    {
+        @if (Model.User != Model.CurrentUser)
+        {
+            <h3>List of Job Applicants</h3>
+            <div id="jobsTable">
+                <table class="table table-condensed" id="listOfJobsIndexTable">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Hiring Experience</th>
+                            <th>Job Experience</th>
+                            <th>Applied on</th>
+                            <th>Deal Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var applicant in Model.ListOfAppliances)
+                        {
+                            <tr class="jobRow">
+
+                                <td class="">
+                                    <a asp-controller="Profile" asp-action="Detail" asp-route-id="@applicant.AppliedBy.Id"> @applicant.AppliedBy.FirstName @applicant.AppliedBy.LastName </a>
+                                </td>
+
+                                <td class="">
+                                    @for (int i = 0; i < 10; i++)
+                                    {
+                                        if (i <= applicant.AppliedBy.HiringExperience)
+                                        {
+                                            <span class="fa fa-star checked"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fa fa-star"></span>
+                                        }
+
+                                    }
+
+
+                                </td>
+                                <td class="">
+                                    @for (int i = 0; i < 10; i++)
+                                    {
+                                        if (i <= applicant.AppliedBy.Jobexperience)
+                                        {
+                                            <span class="fa fa-star checked"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fa fa-star"></span>
+                                        }
+
+                                    }
+                                </td>
+                                <td class="">@applicant.DateCreated</td>
+                                <td class="">@applicant.MyPrice$</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <h3>List of Job Applicants</h3>
+            <div id="jobsTable">
+                <table class="table table-condensed" id="listOfJobsIndexTable">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Hiring Experience</th>
+                            <th>Job Experience</th>
+                            <th>Date Applied</th>
+                            <th>Deal Price</th>
+                            <th>Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var applicant in Model.ListOfAppliances)
+                        {
+                        <tr class="jobRow">
+
+                            <td class="">
+                                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@applicant.AppliedBy.Id"> @applicant.AppliedBy.FirstName @applicant.AppliedBy.LastName </a>
+                            </td>
+
+                            <td class="">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    if (i <= applicant.AppliedBy.HiringExperience)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa fa-star"></span>
+                                    }
+
+                                }
+
+
+                            </td>
+                            <td class="">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    if (i <= applicant.AppliedBy.Jobexperience)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa fa-star"></span>
+                                    }
+
+                                }
+                            </td>
+                            <td class="">@applicant.DateCreated</td>
+                            <td class="">@applicant.MyPrice$</td>
+                            <td class="">
+
+
+                          
+                            <form method="post">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="input-group col-md-2">
+                                    <input asp-for="JobId" type="hidden" value="@Model.JobId">
+                                    <input asp-for="EmployerId" type="hidden" value="@applicant.Id">
+                                    <input asp-for="UserPrice" type="hidden" value="@applicant.MyPrice">
+
+                                    <span class="input-group-btn">
+                                        <button class="btn btn btn-info" type="submit">
+                                            Hire
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                            
+                            </td>
+
+                        </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        }
+
+
+    }
+    else
+    {
+        <h3>There are no any job applicants at the moment</h3>
+
+    }
+
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

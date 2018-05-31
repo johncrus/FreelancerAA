@@ -1,0 +1,90 @@
+﻿@model FreelancerAA.Models.JobList.JobMyJobViewModel
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+
+<div id="jobs">
+    @if (Model.MyJobs.Any())
+    {
+        <h3>List of Created Jobs</h3>
+        <div id="jobsTable">
+            <table class="table table-condensed" id="listOfJobsIndexTable">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Status</th>
+                        <th>Date Created</th>
+                        <th>Date Expire</th>
+                        <th>BoostUp</th>
+                        <th>Delete Job</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var job in Model.MyJobs)
+                    {
+                    <tr class="jobRow">
+
+                        <td class="">
+                            <a asp-controller="JobList" asp-action="Detail" asp-route-id="@job.JobId"> @job.Title </a>
+                        </td>
+                        @switch (job.Status)
+                        {
+                            case "1":
+                                <td class=""><span class="label label-primary">Available</span></td>
+                                break;
+                            case "2":
+                                <td class=""><span class="label label-info">In progress</span></td>
+                                break;
+                            case "3":
+                                <td class=""><span class="label label-danger">Unsuccessful</span></td>
+                                break;
+                            case "4":
+                                <td class=""><span class="label label-success">Succes</span></td>
+                                break;
+                            default:
+                                {
+                                    <td class=""><span class="label label-default">Unknown</span></td>
+                                    break;
+                                }
+
+
+                        }
+
+
+
+                        <td class="">@job.DateCreated</td>
+                        <td class="">@job.DateExpire</td>
+                        @if (job.Status == "1")
+                        {
+                            <td class=""><a class="btn btn btn-success" role="button" asp-controller="JobList" asp-action="BoostUp" asp-route-id="@job.JobId" onclick="return confirm('ATENTION! If you confirm, 1$ will be withdrawn from your purse. Are you sure?')">Boost</a></td>
+                            <td class=""><a class="btn btn btn-warning" role="button" asp-controller="JobList" asp-action="DeleteJob" asp-route-id="@job.JobId" onclick="return confirm('Are you sure you want to delete this job?')">Delete Job</a></td>
+                        }
+                        else
+                        {
+                            <td class=""></td>
+                            <td class=""></td>
+
+                        }
+                    </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    else
+    {
+        <h3>There are no any created jobs at the moment</h3>
+
+    }
+
+</div>
+<script>
+function myFunction() {
+    confirm("ATTENTION! If you confirm the boost, 1$ will be automatically withdrawn from your purse");
+}
+</script>

@@ -1,0 +1,40 @@
+﻿@model CreateJobViewModel
+@{
+    ViewData["Title"] = "Create a job";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="RequiredSkills"></label>
+                <input asp-for="RequiredSkills" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" />
+
+            </div>
+
+            <button type="submit" class="btn btn-default">Create a job</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
